@@ -12,6 +12,14 @@ class ItemDefaults
 
     public const B_NAME = 'B';
 
+    public const D_NAME = 'D';
+
+    public const E_NAME = 'E';
+
+    public const F_NAME = 'F';
+
+    public const G_NAME = 'G';
+
     /**
      * @return array
      */
@@ -30,20 +38,20 @@ class ItemDefaults
                 'name' => 'C',
                 'price' => 3,
             ],
-            'D' => [
-                'name' => 'D',
+            static::D_NAME => [
+                'name' => static::D_NAME,
                 'price' => 4,
             ],
-            'E' => [
-                'name' => 'E',
+            static::E_NAME => [
+                'name' => static::E_NAME,
                 'price' => 5,
             ],
-            'F' => [
-                'name' => 'F',
+            static::F_NAME => [
+                'name' => static::F_NAME,
                 'price' => 6,
             ],
-            'G' => [
-                'name' => 'G',
+            static::G_NAME => [
+                'name' => static::G_NAME,
                 'price' => 7,
             ],
             'H' => [

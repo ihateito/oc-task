@@ -69,7 +69,6 @@ class Item
         return $this->discount;
     }
 
-
     /**
      * @param $discount
      * @return Item

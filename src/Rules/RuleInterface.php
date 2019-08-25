@@ -8,7 +8,13 @@ use App\Item;
 interface RuleInterface
 {
     /**
-     * @param Item[] $items
+     * @return string
      */
-    public function calc(array $items): void;
+    public static function getType(): string;
+
+    /**
+     * @param Item[] $items
+     * @return bool
+     */
+    public function calc(array $items): bool;
 }

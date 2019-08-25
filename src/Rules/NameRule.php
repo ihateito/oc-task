@@ -7,9 +7,13 @@ use App\Item;
 
 class NameRule implements RuleInterface
 {
+    private static $type = 'name';
+
+    /** @var array $names */
     private $names;
 
-    private $discount;
+    /** @var float $discount */
+    protected $discount;
 
     public function __construct(array $names, float $discount)
     {
@@ -19,8 +23,9 @@ class NameRule implements RuleInterface
 
     /**
      * @param Item[] $items
+     * @return bool
      */
-    public function calc(array $items): void
+    public function calc(array $items): bool
     {
         $groupedItems = $this->groupByName($items);
         $countByNames = [];
@@ -35,9 +40,10 @@ class NameRule implements RuleInterface
                     )
                 );
             } else {
-                return;
+                return false;
             }
         }
+
         for ($i = 0, $iMax = min($countByNames); $i < $iMax; $i++) {
             foreach ($this->names as $name) {
                 /** @var Item $item */
@@ -45,6 +51,8 @@ class NameRule implements RuleInterface
                 $item->setDiscount($this->discount);
             }
         }
+
+        return true;
     }
 
     /**
@@ -60,5 +68,13 @@ class NameRule implements RuleInterface
         }
 
         return $groupedItems;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getType(): string
+    {
+        return static::$type;
     }
 }

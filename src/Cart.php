@@ -5,7 +5,15 @@ namespace App;
 
 class Cart
 {
-    public $items = [];
+    private $discountRuleProvider;
+
+    /** @var Item[] $items */
+    private $items = [];
+
+    public function __construct(DiscountRuleProvider $discountRuleProvider)
+    {
+        $this->discountRuleProvider = $discountRuleProvider;
+    }
 
     /**
      * @param Item $item
@@ -18,13 +26,19 @@ class Cart
         return $this;
     }
 
-    public function calcItemsPrice(): void
+    public function calcItemsPrice(): float
     {
-        $itemDiscountRules = new DiscountRulesProvider();
-
-        foreach ($itemDiscountRules->getRules() as $rule) {
+        foreach ($this->discountRuleProvider->getRules() as $rule) {
             $rule->calc($this->items);
         }
+
+        $itemsPrice = 0;
+
+        foreach ($this->items as $item) {
+            $itemsPrice += $item->getPrice() * $item->getDiscount();
+        }
+
+        return $itemsPrice;
     }
 
     /**
