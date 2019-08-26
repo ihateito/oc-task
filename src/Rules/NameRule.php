@@ -5,12 +5,18 @@ namespace App\Rules;
 
 use App\Item;
 
+/**
+ * Class NameRule
+ * Набор правил для вычисления скидок 1-3
+ *
+ * @package App\Rules
+ */
 class NameRule implements RuleInterface
 {
     private static $type = 'name';
 
     /** @var array $names */
-    private $names;
+    protected $names;
 
     /** @var float $discount */
     protected $discount;
@@ -22,44 +28,60 @@ class NameRule implements RuleInterface
     }
 
     /**
+     * Вычисление скидок 1-3
      * @param Item[] $items
      * @return bool
      */
     public function calc(array $items): bool
     {
+        $itemsForDiscount = $this->getItemsForDiscount($items);
+
+        if ($itemsForDiscount) {
+            for ($i = 0, $iMax = count(min($itemsForDiscount)); $i < $iMax; $i++) {
+                foreach ($this->names as $name) {
+                    /** @var Item $item */
+                    $item = $itemsForDiscount[$name][$i];
+                    $item->setRule($this);
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param array $items
+     * @return array
+     */
+    protected function getItemsForDiscount(array $items): array
+    {
         $groupedItems = $this->groupByName($items);
-        $countByNames = [];
+        $itemsForDiscount = [];
 
         foreach ($this->names as $name) {
             if (isset($groupedItems[$name])) {
-                $countByNames[] = count(
-                    array_filter($groupedItems[$name],
+                $itemsForDiscount[$name] =
+                    array_values(array_filter($groupedItems[$name],
                         static function (Item $item) {
-                            return $item->getDiscount() === null;
+                            return $item->getRule() === null;
                         }
-                    )
-                );
+                    ));
             } else {
-                return false;
+                return [];
             }
         }
 
-        for ($i = 0, $iMax = min($countByNames); $i < $iMax; $i++) {
-            foreach ($this->names as $name) {
-                /** @var Item $item */
-                $item = $groupedItems[$name][$i];
-                $item->setDiscount($this->discount);
-            }
-        }
-
-        return true;
+        return $itemsForDiscount;
     }
+
 
     /**
      * @param Item[] $items
      * @return array
      */
-    private function groupByName(array $items): array
+    protected function groupByName(array $items): array
     {
         $groupedItems = [];
 
@@ -76,5 +98,13 @@ class NameRule implements RuleInterface
     public static function getType(): string
     {
         return static::$type;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDiscount(): float
+    {
+        return $this->discount;
     }
 }

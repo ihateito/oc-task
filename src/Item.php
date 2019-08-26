@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Rules\RuleInterface;
+
 class Item
 {
     /** @var string|null */
@@ -11,8 +13,8 @@ class Item
     /** @var int|null */
     private $price;
 
-    /** @var float|null */
-    private $discount;
+    /** @var RuleInterface|null */
+    private $rule;
 
     public function __construct(array $data)
     {
@@ -62,20 +64,20 @@ class Item
     }
 
     /**
-     * @return float|null
+     * @return RuleInterface|null
      */
-    public function getDiscount(): ?float
+    public function getRule(): ?RuleInterface
     {
-        return $this->discount;
+        return $this->rule;
     }
 
     /**
-     * @param $discount
+     * @param RuleInterface $rule
      * @return Item
      */
-    public function setDiscount($discount): self
+    public function setRule(RuleInterface $rule): self
     {
-        $this->discount = $discount;
+        $this->rule = $rule;
 
         return $this;
     }

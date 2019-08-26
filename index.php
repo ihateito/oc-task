@@ -1,51 +1,27 @@
 <?php
+declare(strict_types=1);
 
 use App\Cart;
+use App\Defaults\RuleDefaults;
 use App\DiscountRuleProvider;
 use App\Item;
-use App\ItemDefaults;
+use App\Defaults\ItemDefaults;
 
 require __DIR__ . '/vendor/autoload.php';
 
-$rulesData = [
-    [
-        'type' => 'name',
-        'names' => [ItemDefaults::A_NAME, ItemDefaults::B_NAME],
-        'discount' => 0.9
-    ],
-    [
-        'type' => 'name',
-        'names' => [ItemDefaults::D_NAME, ItemDefaults::E_NAME],
-        'discount' => 0.94
-    ],
-    [
-        'type' => 'name',
-        'names' => [ItemDefaults::E_NAME, ItemDefaults::F_NAME, ItemDefaults::G_NAME],
-        'discount' => 0.97
-    ],
-    [
-        'type' => 'count',
-        'count' => 3,
-        'discount' => 0.95,
-        'excludeNames' => ['A', 'C'],
-    ],
-    [
-        'type' => 'count',
-        'count' => 4,
-        'discount' => 0.90,
-        'excludeNames' => ['A', 'C'],
-    ],
-    [
-        'type' => 'count',
-        'count' => 5,
-        'discount' => 0.80,
-        'excludeNames' => ['A', 'C'],
-    ],
-];
+/**
+ * Объявляем/Инициализируем список правил
+ */
+$discountRuleProvider = new DiscountRuleProvider(RuleDefaults::getData());
 
-$discountRuleProvider = new DiscountRuleProvider($rulesData);
-
+/**
+ * Создаем корзину, передаем правила для расчета скидок
+ */
 $cart = new Cart($discountRuleProvider);
+
+/**
+ * Добавляем товар в корзину
+ */
 $cart->addItem(new Item(ItemDefaults::getItemData(ItemDefaults::A_NAME)))
     ->addItem(new Item(ItemDefaults::getItemData(ItemDefaults::B_NAME)))
     ->addItem(new Item(ItemDefaults::getItemData(ItemDefaults::B_NAME)))
@@ -54,7 +30,18 @@ $cart->addItem(new Item(ItemDefaults::getItemData(ItemDefaults::A_NAME)))
     ->addItem(new Item(ItemDefaults::getItemData(ItemDefaults::G_NAME)))
     ->addItem(new Item(ItemDefaults::getItemData(ItemDefaults::E_NAME)))
     ->addItem(new Item(ItemDefaults::getItemData(ItemDefaults::A_NAME)))
-    ->addItem(new Item(ItemDefaults::getItemData(ItemDefaults::B_NAME)))
+    ->addItem(new Item(ItemDefaults::getItemData(ItemDefaults::C_NAME)))
+    ->addItem(new Item(ItemDefaults::getItemData(ItemDefaults::G_NAME)))
+    ->addItem(new Item(ItemDefaults::getItemData(ItemDefaults::I_NAME)))
+    ->addItem(new Item(ItemDefaults::getItemData(ItemDefaults::K_NAME)))
+    ->addItem(new Item(ItemDefaults::getItemData(ItemDefaults::L_NAME)))
+    ->addItem(new Item(ItemDefaults::getItemData(ItemDefaults::H_NAME)))
+    ->addItem(new Item(ItemDefaults::getItemData(ItemDefaults::E_NAME)))
+    ->addItem(new Item(ItemDefaults::getItemData(ItemDefaults::J_NAME)))
+    ->addItem(new Item(ItemDefaults::getItemData(ItemDefaults::M_NAME)))
     ->addItem(new Item(ItemDefaults::getItemData(ItemDefaults::D_NAME)));
 
-var_dump($cart->calcItemsPrice());
+/**
+ * Расчитываем суммарную стоимость
+ */
+echo $cart->calcItemsPrice();

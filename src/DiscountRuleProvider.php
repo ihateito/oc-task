@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App;
 
 use App\Rules\CountRule;
+use App\Rules\MultipleNameRule;
 use App\Rules\NameRule;
 use App\Rules\RuleInterface;
 
@@ -27,6 +28,9 @@ class DiscountRuleProvider
             switch ($ruleArr['type']) {
                 case NameRule::getType():
                     $rule = new NameRule($ruleArr['names'], $ruleArr['discount']);
+                    break;
+                case MultipleNameRule::getType():
+                    $rule = new MultipleNameRule($ruleArr['names'], $ruleArr['multipleNames'], $ruleArr['discount']);
                     break;
                 case CountRule::getType():
                     $rule = new CountRule($ruleArr['count'], $ruleArr['discount'], $ruleArr['excludeNames']);

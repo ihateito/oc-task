@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App;
+namespace App\Defaults;
 
 /**
  * Class ItemNames
@@ -12,6 +12,8 @@ class ItemDefaults
 
     public const B_NAME = 'B';
 
+    public const C_NAME = 'C';
+
     public const D_NAME = 'D';
 
     public const E_NAME = 'E';
@@ -19,6 +21,18 @@ class ItemDefaults
     public const F_NAME = 'F';
 
     public const G_NAME = 'G';
+
+    public const H_NAME = 'H';
+
+    public const I_NAME = 'I';
+
+    public const J_NAME = 'J';
+
+    public const K_NAME = 'K';
+
+    public const L_NAME = 'L';
+
+    public const M_NAME = 'M';
 
     /**
      * @return array
@@ -34,8 +48,8 @@ class ItemDefaults
                 'name' => static::B_NAME,
                 'price' => 2,
             ],
-            'C' => [
-                'name' => 'C',
+            static::C_NAME => [
+                'name' => static::C_NAME,
                 'price' => 3,
             ],
             static::D_NAME => [
@@ -54,28 +68,28 @@ class ItemDefaults
                 'name' => static::G_NAME,
                 'price' => 7,
             ],
-            'H' => [
-                'name' => 'H',
+            static::H_NAME => [
+                'name' => static::H_NAME,
                 'price' => 8,
             ],
-            'I' => [
-                'name' => 'I',
+            static::I_NAME => [
+                'name' => static::I_NAME,
                 'price' => 9,
             ],
-            'J' => [
-                'name' => 'J',
+            static::J_NAME => [
+                'name' => static::J_NAME,
                 'price' => 12,
             ],
-            'K' => [
-                'name' => 'K',
+            static::K_NAME => [
+                'name' => static::K_NAME,
                 'price' => 11,
             ],
-            'L' => [
-                'name' => 'L',
+            static::L_NAME => [
+                'name' => static::L_NAME,
                 'price' => 32,
             ],
-            'M' => [
-                'name' => 'M',
+            static::M_NAME => [
+                'name' => static::M_NAME,
                 'price' => 13,
             ]
         ];

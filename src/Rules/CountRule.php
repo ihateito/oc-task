@@ -5,6 +5,12 @@ namespace App\Rules;
 
 use App\Item;
 
+/**
+ * Class CountRule
+ * Набор правил для вычисления скидок 5-7
+ *
+ * @package App\Rules
+ */
 class CountRule implements RuleInterface
 {
     private static $type = 'count';
@@ -26,24 +32,24 @@ class CountRule implements RuleInterface
     }
 
     /**
-     *
-     *
+     * Вычисление скидок 5-7
      * @param Item[] $items
      * @return bool
      */
     public function calc(array $items): bool
     {
-        $discountItems = [];
+        /** @var Item[] $itemsForDiscount */
+        $itemsForDiscount = [];
 
         foreach ($items as $key => $item) {
-            if ($item->getDiscount() === null && !in_array($item->getName(), $this->excludeNames, true)) {
-                $discountItems[] = $item;
+            if ($item->getRule() === null && !in_array($item->getName(), $this->excludeNames, true)) {
+                $itemsForDiscount[] = $item;
             }
         }
 
-        if (count($items) === $this->count && count($discountItems) === $this->count) {
-            foreach ($discountItems as $item) {
-                $item->setDiscount($this->discount);
+        if (count($itemsForDiscount) >= $this->count) {
+            for ($i = 0; $i < $this->count; $i++) {
+                $itemsForDiscount[$i]->setRule($this);
             }
 
             return true;
@@ -58,5 +64,13 @@ class CountRule implements RuleInterface
     public static function getType(): string
     {
         return static::$type;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDiscount(): float
+    {
+        return $this->discount;
     }
 }

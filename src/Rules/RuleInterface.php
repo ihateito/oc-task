@@ -17,4 +17,9 @@ interface RuleInterface
      * @return bool
      */
     public function calc(array $items): bool;
+
+    /**
+     * @return float
+     */
+    public function getDiscount(): float;
 }

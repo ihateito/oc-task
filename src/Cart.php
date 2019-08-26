@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Rules\CountRule;
+
 class Cart
 {
     private $discountRuleProvider;
@@ -28,14 +30,24 @@ class Cart
 
     public function calcItemsPrice(): float
     {
+        $isCountRuleApplied = false;
+
         foreach ($this->discountRuleProvider->getRules() as $rule) {
-            $rule->calc($this->items);
+            /**
+             * 8. Описанные скидки 5,6,7 не суммируются, применяется только одна из них
+             */
+            if (!$isCountRuleApplied && $rule::getType() === CountRule::getType()) {
+                $isCountRuleApplied = $rule->calc($this->items);
+            } else {
+                $rule->calc($this->items);
+            }
         }
 
         $itemsPrice = 0;
 
         foreach ($this->items as $item) {
-            $itemsPrice += $item->getPrice() * $item->getDiscount();
+            $itemsPrice += $item->getRule() === null
+                ? $item->getPrice() : $item->getPrice() * $item->getRule()->getDiscount();
         }
 
         return $itemsPrice;
