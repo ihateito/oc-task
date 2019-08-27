@@ -38,7 +38,7 @@ class Cart
              */
             if (!$isCountRuleApplied && $rule::getType() === CountRule::getType()) {
                 $isCountRuleApplied = $rule->calc($this->items);
-            } else {
+            } elseif ($rule::getType() !== CountRule::getType()) {
                 $rule->calc($this->items);
             }
         }
